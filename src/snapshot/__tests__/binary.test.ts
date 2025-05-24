@@ -1,5 +1,5 @@
-import { memfs } from '../../index.js';
-import * as binary from '../binary.js';
+import { memfs } from '../..';
+import * as binary from '../binary';
 
 const data = {
   '/start': {

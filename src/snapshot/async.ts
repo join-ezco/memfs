@@ -1,5 +1,5 @@
-import { SnapshotNodeType } from './constants.js';
-import type { AsyncSnapshotOptions, SnapshotNode } from './types.js';
+import { SnapshotNodeType } from './constants';
+import type { AsyncSnapshotOptions, SnapshotNode } from './types';
 
 export const toSnapshot = async ({ fs, path = '/', separator = '/' }: AsyncSnapshotOptions): Promise<SnapshotNode> => {
   const stats = await fs.lstat(path);

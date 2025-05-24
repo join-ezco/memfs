@@ -1,5 +1,5 @@
-import { go } from './go.js';
-import type { Code } from './types.js';
+import { go } from './go';
+import type { Code } from './types';
 
 class Task<T = unknown> {
   public readonly resolve!: (data: T) => void;

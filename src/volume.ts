@@ -1,23 +1,23 @@
 import * as pathModule from 'path';
-import { Node, Link, File } from './node.js';
-import Stats from './Stats.js';
-import Dirent from './Dirent.js';
-import { Buffer, bufferAllocUnsafe, bufferFrom } from './internal/buffer.js';
-import queueMicrotask from './queueMicrotask.js';
-import process from './process.js';
-import setTimeoutUnref, { TSetTimeout } from './setTimeoutUnref.js';
+import { Node, Link, File } from './node';
+import Stats from './Stats';
+import Dirent from './Dirent';
+import { Buffer, bufferAllocUnsafe, bufferFrom } from './internal/buffer';
+import queueMicrotask from './queueMicrotask';
+import process from './process';
+import setTimeoutUnref, { TSetTimeout } from './setTimeoutUnref';
 import { ReadableStream as Readable, WritableStream as Writable } from 'web-streams-polyfill';
-import { constants } from './constants.js';
+import { constants } from './constants';
 import { EventEmitter } from 'events';
-import { TEncodingExtended, TDataOut, strToEncoding, ENCODING_UTF8 } from './encoding.js';
-import { FileHandle } from './node/FileHandle.js';
+import { TEncodingExtended, TDataOut, strToEncoding, ENCODING_UTF8 } from './encoding';
+import { FileHandle } from './node/FileHandle';
 import * as util from 'util';
-import * as misc from './node/types/misc.js';
-import * as opts from './node/types/options.js';
-import { FsCallbackApi, WritevCallback } from './node/types/FsCallbackApi.js';
-import { FsPromises } from './node/FsPromises.js';
-import { ToTreeOptions, toTreeSync } from './print/index.js';
-import { ERRSTR, FLAGS, MODE } from './node/constants.js';
+import * as misc from './node/types/misc';
+import * as opts from './node/types/options';
+import { FsCallbackApi, WritevCallback } from './node/types/FsCallbackApi';
+import { FsPromises } from './node/FsPromises';
+import { ToTreeOptions, toTreeSync } from './print';
+import { ERRSTR, FLAGS, MODE } from './node/constants';
 import {
   getDefaultOpts,
   getDefaultOptsAndCb,
@@ -39,7 +39,7 @@ import {
   writeFileDefaults,
   getOpendirOptsAndCb,
   getOpendirOptions,
-} from './node/options.js';
+} from './node/options';
 import {
   validateCallback,
   modeToNumber,
@@ -56,10 +56,10 @@ import {
   bufferToEncoding,
   getWriteSyncArgs,
   unixify,
-} from './node/util.js';
-import type { PathLike, symlink } from './node/types/misc.js';
-import type { FsPromisesApi, FsSynchronousApi } from './node/types/index.js';
-import { Dir } from './Dir.js';
+} from './node/util';
+import type { PathLike, symlink } from './node/types/misc';
+import type { FsPromisesApi, FsSynchronousApi } from './node/types';
+import { Dir } from './Dir';
 
 const resolveCrossPlatform = pathModule.resolve;
 const {

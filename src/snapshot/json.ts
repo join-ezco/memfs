@@ -1,9 +1,9 @@
 import { JsonEncoder } from '@jsonjoy.com/json-pack/lib/json/JsonEncoder';
 import { JsonDecoder } from '@jsonjoy.com/json-pack/lib/json/JsonDecoder';
-import { fromSnapshotSync, toSnapshotSync } from './sync.js';
-import { fromSnapshot, toSnapshot } from './async.js';
-import { writer } from './shared.js';
-import type { AsyncSnapshotOptions, SnapshotNode, SnapshotOptions } from './types.js';
+import { fromSnapshotSync, toSnapshotSync } from './sync';
+import { fromSnapshot, toSnapshot } from './async';
+import { writer } from './shared';
+import type { AsyncSnapshotOptions, SnapshotNode, SnapshotOptions } from './types';
 
 /** @todo Import this type from `json-joy` once it is available. */
 export type JsonUint8Array<T> = Uint8Array & { __BRAND__: 'json'; __TYPE__: T };

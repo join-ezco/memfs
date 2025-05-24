@@ -1,4 +1,4 @@
-import type { IFileHandle, TEncodingExtended, TFlags, TMode } from './misc.js';
+import type { IFileHandle, TEncodingExtended, TFlags, TMode } from './misc';
 
 export interface IOptions {
   encoding?: BufferEncoding | TEncodingExtended;

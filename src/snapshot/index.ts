@@ -1,5 +1,5 @@
-export type * from './types.js';
-export * from './constants.js';
-export * from './sync.js';
-export * from './binary.js';
-export * from './json.js';
+export type * from './types';
+export * from './constants';
+export * from './sync';
+export * from './binary';
+export * from './json';

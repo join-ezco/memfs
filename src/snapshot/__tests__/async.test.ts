@@ -1,6 +1,6 @@
-import { fromSnapshot, toSnapshot } from '../async.js';
-import { memfs } from '../../index.js';
-import { SnapshotNodeType } from '../constants.js';
+import { fromSnapshot, toSnapshot } from '../async';
+import { memfs } from '../..';
+import { SnapshotNodeType } from '../constants';
 
 test('can snapshot a single file', async () => {
   const { fs } = memfs({

@@ -1,5 +1,5 @@
-import { toTreeSync } from '../index.js';
-import { memfs } from '../../index.js';
+import { toTreeSync } from '..';
+import { memfs } from '../..';
 
 test('can print a single file', () => {
   const { fs } = memfs({

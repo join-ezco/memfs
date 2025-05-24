@@ -1,14 +1,14 @@
-import { ERRSTR, FLAGS } from './constants.js';
-import * as errors from '../internal/errors.js';
-import { Buffer } from '../internal/buffer.js';
-import type { FsCallbackApi } from './types/index.js';
-import type * as misc from './types/misc.js';
-import { ENCODING_UTF8, TEncodingExtended } from '../encoding.js';
-import { bufferFrom } from '../internal/buffer.js';
-import queueMicrotask from '../queueMicrotask.js';
+import { ERRSTR, FLAGS } from './constants';
+import * as errors from '../internal/errors';
+import { Buffer } from '../internal/buffer';
+import type { FsCallbackApi } from './types';
+import type * as misc from './types/misc';
+import { ENCODING_UTF8, TEncodingExtended } from '../encoding';
+import { bufferFrom } from '../internal/buffer';
+import queueMicrotask from '../queueMicrotask';
 import { Readable } from 'stream';
 
-export const isWin = process.platform === 'win32';
+export const isWin = typeof process !== 'undefined' ? process.platform === 'win32' : false;
 
 export function promisify(
   fs: FsCallbackApi,
