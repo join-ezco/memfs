@@ -1,6 +1,6 @@
-import { memfs } from '../..';
-import { SnapshotNodeType } from '../constants';
-import * as json from '../json';
+import { memfs } from '../../index.js';
+import { SnapshotNodeType } from '../constants.js';
+import * as json from '../json.js';
 
 const data = {
   '/start': {

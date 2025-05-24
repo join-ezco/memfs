@@ -1,5 +1,5 @@
-import type { FsPromisesApi, FsSynchronousApi } from '../node/types';
-import type { SnapshotNodeType } from './constants';
+import type { FsPromisesApi, FsSynchronousApi } from '../node/types/index.js';
+import type { SnapshotNodeType } from './constants.js';
 
 export interface SnapshotOptions {
   fs: FsSynchronousApi;
@@ -21,11 +21,11 @@ export type FolderNode = [
   entries: { [child: string]: SnapshotNode },
 ];
 
-export interface FolderMetadata {}
+export interface FolderMetadata { }
 
 export type FileNode = [type: SnapshotNodeType.File, meta: FileMetadata, data: Uint8Array];
 
-export interface FileMetadata {}
+export interface FileMetadata { }
 
 export type SymlinkNode = [type: SnapshotNodeType.Symlink, meta: SymlinkMetadata];
 

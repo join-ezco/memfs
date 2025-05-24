@@ -1,5 +1,5 @@
-import {go} from './go';
-import type {Code} from './types';
+import { go } from './go.js';
+import type { Code } from './types.js';
 
 class Task<T = unknown> {
   public readonly resolve!: (data: T) => void;
@@ -8,7 +8,7 @@ class Task<T = unknown> {
     (this as any).resolve = resolve;
     (this as any).reject = reject;
   });
-  constructor(public readonly code: Code<T>) {}
+  constructor(public readonly code: Code<T>) { }
 }
 
 /** Limits concurrency of async code. */

@@ -1,10 +1,13 @@
+// @ts-expect-error
 import { CborEncoder } from '@jsonjoy.com/json-pack/lib/cbor/CborEncoder';
+// @ts-expect-error
 import { CborDecoder } from '@jsonjoy.com/json-pack/lib/cbor/CborDecoder';
-import { fromSnapshotSync, toSnapshotSync } from './sync';
-import { fromSnapshot, toSnapshot } from './async';
-import { writer } from './shared';
+import { fromSnapshotSync, toSnapshotSync } from './sync.js';
+import { fromSnapshot, toSnapshot } from './async.js';
+import { writer } from './shared.js';
+// @ts-expect-error
 import type { CborUint8Array } from '@jsonjoy.com/json-pack/lib/cbor/types';
-import type { AsyncSnapshotOptions, SnapshotNode, SnapshotOptions } from './types';
+import type { AsyncSnapshotOptions, SnapshotNode, SnapshotOptions } from './types.js';
 
 const encoder = new CborEncoder(writer);
 const decoder = new CborDecoder();

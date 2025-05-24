@@ -1,8 +1,8 @@
 (<any>self).process = require('process/browser');
 
-import { FsaNodeFs, FsaNodeSyncAdapterWorker } from '../fsa-to-node';
-import { FsaNodeSyncWorker } from '../../src/fsa-to-node/worker/FsaNodeSyncWorker';
-import type { IFileSystemDirectoryHandle } from '../fsa/types';
+import { FsaNodeFs, FsaNodeSyncAdapterWorker } from '../fsa-to-node/index.js';
+import { FsaNodeSyncWorker } from '../../src/fsa-to-node/worker/FsaNodeSyncWorker.js';
+import type { IFileSystemDirectoryHandle } from '../fsa/types.js';
 
 if (typeof window === 'object') {
   const url = (<any>document.currentScript).src;
@@ -13,7 +13,7 @@ if (typeof window === 'object') {
       .then(adapter => {
         fs.syncAdapter = adapter;
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 } else {
   const worker = new FsaNodeSyncWorker();

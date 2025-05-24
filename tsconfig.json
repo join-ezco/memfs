@@ -1,20 +1,34 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "lib": ["ES2017", "dom"],
-    "module": "commonjs",
+    "target": "esnext",
+    "lib": [
+      "ES2020",
+      "dom"
+    ],
+    "module": "NodeNext",
     "removeComments": false,
     "noImplicitAny": false,
     "strictNullChecks": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "lib",
     "declaration": true,
     "skipLibCheck": true,
     "noEmitHelpers": true,
     "importHelpers": true
   },
-  "include": ["src"],
-  "exclude": ["src/__tests__", "node_modules", "lib", "es6", "es2020", "esm", "docs", "README.md"],
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/__tests__",
+    "node_modules",
+    "lib",
+    "es6",
+    "es2020",
+    "esm",
+    "docs",
+    "README.md"
+  ],
   "typedocOptions": {
     "entryPoints": [
       "src/index.ts",

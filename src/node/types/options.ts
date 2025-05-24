@@ -1,4 +1,4 @@
-import type { IFileHandle, TEncodingExtended, TFlags, TMode } from './misc';
+import type { IFileHandle, TEncodingExtended, TFlags, TMode } from './misc.js';
 
 export interface IOptions {
   encoding?: BufferEncoding | TEncodingExtended;
@@ -9,7 +9,7 @@ export interface IFileOptions extends IOptions {
   flag?: TFlags;
 }
 
-export interface IWriteFileOptions extends IFileOptions {}
+export interface IWriteFileOptions extends IFileOptions { }
 
 export interface IReadFileOptions extends IOptions {
   flag?: string;
@@ -19,7 +19,7 @@ export interface IRealpathOptions {
   encoding?: TEncodingExtended;
 }
 
-export interface IAppendFileOptions extends IFileOptions {}
+export interface IAppendFileOptions extends IFileOptions { }
 
 export interface IStatOptions {
   bigint?: boolean;
@@ -30,7 +30,7 @@ export interface IFStatOptions {
   bigint?: boolean;
 }
 
-export interface IAppendFileOptions extends IFileOptions {}
+export interface IAppendFileOptions extends IFileOptions { }
 
 export interface IReadableWebStreamOptions {
   type?: 'bytes' | undefined;

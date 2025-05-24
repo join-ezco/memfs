@@ -1,23 +1,23 @@
 import * as pathModule from 'path';
-import { Node, Link, File } from './node';
-import Stats from './Stats';
-import Dirent from './Dirent';
-import { Buffer, bufferAllocUnsafe, bufferFrom } from './internal/buffer';
-import queueMicrotask from './queueMicrotask';
-import process from './process';
-import setTimeoutUnref, { TSetTimeout } from './setTimeoutUnref';
+import { Node, Link, File } from './node.js';
+import Stats from './Stats.js';
+import Dirent from './Dirent.js';
+import { Buffer, bufferAllocUnsafe, bufferFrom } from './internal/buffer.js';
+import queueMicrotask from './queueMicrotask.js';
+import process from './process.js';
+import setTimeoutUnref, { TSetTimeout } from './setTimeoutUnref.js';
 import { Readable, Writable } from 'stream';
-import { constants } from './constants';
+import { constants } from './constants.js';
 import { EventEmitter } from 'events';
-import { TEncodingExtended, TDataOut, strToEncoding, ENCODING_UTF8 } from './encoding';
-import { FileHandle } from './node/FileHandle';
+import { TEncodingExtended, TDataOut, strToEncoding, ENCODING_UTF8 } from './encoding.js';
+import { FileHandle } from './node/FileHandle.js';
 import * as util from 'util';
-import * as misc from './node/types/misc';
-import * as opts from './node/types/options';
-import { FsCallbackApi, WritevCallback } from './node/types/FsCallbackApi';
-import { FsPromises } from './node/FsPromises';
-import { ToTreeOptions, toTreeSync } from './print';
-import { ERRSTR, FLAGS, MODE } from './node/constants';
+import * as misc from './node/types/misc.js';
+import * as opts from './node/types/options.js';
+import { FsCallbackApi, WritevCallback } from './node/types/FsCallbackApi.js';
+import { FsPromises } from './node/FsPromises.js';
+import { ToTreeOptions, toTreeSync } from './print/index.js';
+import { ERRSTR, FLAGS, MODE } from './node/constants.js';
 import {
   getDefaultOpts,
   getDefaultOptsAndCb,
@@ -39,7 +39,7 @@ import {
   writeFileDefaults,
   getOpendirOptsAndCb,
   getOpendirOptions,
-} from './node/options';
+} from './node/options.js';
 import {
   validateCallback,
   modeToNumber,
@@ -56,10 +56,10 @@ import {
   bufferToEncoding,
   getWriteSyncArgs,
   unixify,
-} from './node/util';
-import type { PathLike, symlink } from './node/types/misc';
-import type { FsPromisesApi, FsSynchronousApi } from './node/types';
-import { Dir } from './Dir';
+} from './node/util.js';
+import type { PathLike, symlink } from './node/types/misc.js';
+import type { FsPromisesApi, FsSynchronousApi } from './node/types/index.js';
+import { Dir } from './Dir.js';
 
 const resolveCrossPlatform = pathModule.resolve;
 const {
@@ -123,7 +123,7 @@ export type TFlagsCopy =
 // ---------------------------------------- Options
 
 // Options for `fs.appendFile` and `fs.appendFileSync`
-export interface IAppendFileOptions extends opts.IFileOptions {}
+export interface IAppendFileOptions extends opts.IFileOptions { }
 
 // Options for `fs.watchFile`
 export interface IWatchFileOptions {
@@ -135,6 +135,7 @@ export interface IWatchFileOptions {
 export interface IWatchOptions extends opts.IOptions {
   persistent?: boolean;
   recursive?: boolean;
+  encoding?: TEncodingExtended;
 }
 
 // ---------------------------------------- Utility functions
@@ -1861,8 +1862,10 @@ export class Volume implements FsCallbackApi, FsSynchronousApi {
   mkdir(path: PathLike, a: TCallback<void> | TMode | opts.IMkdirOptions, b?: TCallback<string> | TCallback<void>) {
     const opts: TMode | opts.IMkdirOptions = getMkdirOptions(a);
     const callback = validateCallback(typeof a === 'function' ? a : b!);
+    // @ts-expect-error
     const modeNum = modeToNumber(opts.mode, 0o777);
     const filename = pathToFilename(path);
+    // @ts-expect-error
     if (opts.recursive) this.wrapAsync(this.mkdirpBase, [filename, modeNum], callback);
     else this.wrapAsync(this.mkdirBase, [filename, modeNum], callback);
   }
@@ -2421,7 +2424,7 @@ export interface IWriteStream extends Writable {
   bytesWritten: number;
   path: string;
   pending: boolean;
-  new (path: PathLike, options: opts.IWriteStreamOptions);
+  new(path: PathLike, options: opts.IWriteStreamOptions);
   open();
   close();
 }

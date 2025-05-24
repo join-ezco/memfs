@@ -1,5 +1,5 @@
-import { SnapshotNodeType } from './constants';
-import type { SnapshotNode, SnapshotOptions } from './types';
+import { SnapshotNodeType } from './constants.js';
+import type { SnapshotNode, SnapshotOptions } from './types.js';
 
 export const toSnapshotSync = ({ fs, path = '/', separator = '/' }: SnapshotOptions): SnapshotNode => {
   const stats = fs.lstatSync(path);

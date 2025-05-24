@@ -1,6 +1,6 @@
-import { toSnapshotSync, fromSnapshotSync } from '../sync';
-import { memfs } from '../..';
-import { SnapshotNodeType } from '../constants';
+import { toSnapshotSync, fromSnapshotSync } from '../sync.js';
+import { memfs } from '../../index.js';
+import { SnapshotNodeType } from '../constants.js';
 
 test('can snapshot a single file', () => {
   const { fs } = memfs({

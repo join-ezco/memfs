@@ -1,5 +1,5 @@
-import Stats from './Stats';
-import Dirent from './Dirent';
+import Stats from './Stats.js';
+import Dirent from './Dirent.js';
 import {
   Volume,
   StatWatcher,
@@ -8,12 +8,12 @@ import {
   IWriteStream,
   DirectoryJSON,
   NestedDirectoryJSON,
-} from './volume';
-import { constants } from './constants';
-import type { FsPromisesApi } from './node/types';
-import type * as misc from './node/types/misc';
-import { fsSynchronousApiList } from './node/lists/fsSynchronousApiList';
-import { fsCallbackApiList } from './node/lists/fsCallbackApiList';
+} from './volume.js';
+import { constants } from './constants.js';
+import type { FsPromisesApi } from './node/types/index.js';
+import type * as misc from './node/types/misc.js';
+import { fsSynchronousApiList } from './node/lists/fsSynchronousApiList.js';
+import { fsCallbackApiList } from './node/lists/fsCallbackApiList.js';
 const { F_OK, R_OK, W_OK, X_OK } = constants;
 
 export { DirectoryJSON, NestedDirectoryJSON, Volume };
@@ -71,7 +71,3 @@ export const memfs = (json: NestedDirectoryJSON = {}, cwd: string = '/'): { fs: 
 };
 
 export type IFsWithVolume = IFs & { __vol: Volume };
-
-declare let module;
-module.exports = { ...module.exports, ...fs };
-module.exports.semantic = true;

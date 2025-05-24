@@ -4,8 +4,8 @@
 // value statically and permanently identifies the error. While the error
 // message may change, the code should not.
 
-import * as assert from 'assert';
-import * as util from 'util';
+import assert from 'assert';
+import util from 'util';
 
 const kCode = typeof Symbol === 'undefined' ? '_kCode' : (Symbol as any)('code');
 const messages = {}; // new Map();
@@ -40,7 +40,7 @@ class AssertionError extends g.Error {
     } else {
       super(
         `${util.inspect(options.actual).slice(0, 128)} ` +
-          `${options.operator} ${util.inspect(options.expected).slice(0, 128)}`,
+        `${options.operator} ${util.inspect(options.expected).slice(0, 128)}`,
       );
     }
 
