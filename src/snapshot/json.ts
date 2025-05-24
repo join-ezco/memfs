@@ -1,6 +1,4 @@
-// @ts-expect-error
 import { JsonEncoder } from '@jsonjoy.com/json-pack/lib/json/JsonEncoder';
-// @ts-expect-error
 import { JsonDecoder } from '@jsonjoy.com/json-pack/lib/json/JsonDecoder';
 import { fromSnapshotSync, toSnapshotSync } from './sync.js';
 import { fromSnapshot, toSnapshot } from './async.js';

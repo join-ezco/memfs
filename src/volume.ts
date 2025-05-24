@@ -6,7 +6,7 @@ import { Buffer, bufferAllocUnsafe, bufferFrom } from './internal/buffer.js';
 import queueMicrotask from './queueMicrotask.js';
 import process from './process.js';
 import setTimeoutUnref, { TSetTimeout } from './setTimeoutUnref.js';
-import { Readable, Writable } from 'stream';
+import { ReadableStream as Readable, WritableStream as Writable } from 'web-streams-polyfill';
 import { constants } from './constants.js';
 import { EventEmitter } from 'events';
 import { TEncodingExtended, TDataOut, strToEncoding, ENCODING_UTF8 } from './encoding.js';
@@ -297,6 +297,7 @@ export class Volume implements FsCallbackApi, FsSynchronousApi {
     File: new (...args) => File;
   };
 
+  // @ts-expect-error
   private promisesApi = new FsPromises(this, FileHandle);
 
   get promises(): FsPromisesApi {
@@ -1862,10 +1863,8 @@ export class Volume implements FsCallbackApi, FsSynchronousApi {
   mkdir(path: PathLike, a: TCallback<void> | TMode | opts.IMkdirOptions, b?: TCallback<string> | TCallback<void>) {
     const opts: TMode | opts.IMkdirOptions = getMkdirOptions(a);
     const callback = validateCallback(typeof a === 'function' ? a : b!);
-    // @ts-expect-error
     const modeNum = modeToNumber(opts.mode, 0o777);
     const filename = pathToFilename(path);
-    // @ts-expect-error
     if (opts.recursive) this.wrapAsync(this.mkdirpBase, [filename, modeNum], callback);
     else this.wrapAsync(this.mkdirBase, [filename, modeNum], callback);
   }
@@ -2124,6 +2123,7 @@ export class Volume implements FsCallbackApi, FsSynchronousApi {
     return new this.ReadStream(path, options);
   }
 
+  // @ts-expect-error
   createWriteStream(path: PathLike, options?: opts.IWriteStreamOptions | string): IWriteStream {
     return new this.WriteStream(path, options);
   }
@@ -2258,7 +2258,7 @@ function allocNewPool(poolSize) {
 }
 
 util.inherits(FsReadStream, Readable);
-exports.ReadStream = FsReadStream;
+export { FsReadStream as ReadStream };
 function FsReadStream(vol, path, options) {
   if (!(this instanceof FsReadStream)) return new (FsReadStream as any)(vol, path, options);
 
@@ -2430,7 +2430,7 @@ export interface IWriteStream extends Writable {
 }
 
 util.inherits(FsWriteStream, Writable);
-exports.WriteStream = FsWriteStream;
+export { FsWriteStream as WriteStream };
 function FsWriteStream(vol, path, options) {
   if (!(this instanceof FsWriteStream)) return new (FsWriteStream as any)(vol, path, options);
 

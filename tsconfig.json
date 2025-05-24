@@ -5,7 +5,8 @@
       "ES2020",
       "dom"
     ],
-    "module": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "removeComments": false,
     "noImplicitAny": false,
     "strictNullChecks": true,
@@ -14,7 +15,8 @@
     "declaration": true,
     "skipLibCheck": true,
     "noEmitHelpers": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "esModuleInterop": true
   },
   "include": [
     "src"

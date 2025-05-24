@@ -32,6 +32,26 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js",
       "require": "./lib/index.js"
+    },
+    "./snapshot": {
+      "types": "./lib/snapshot/index.d.ts",
+      "import": "./lib/snapshot/index.js",
+      "require": "./lib/snapshot/index.js"
+    },
+    "./webfs": {
+      "types": "./lib/webfs/index.d.ts",
+      "import": "./lib/webfs/index.js",
+      "require": "./lib/webfs/index.js"
+    },
+    "./node": {
+      "types": "./lib/node/index.d.ts",
+      "import": "./lib/node/index.js",
+      "require": "./lib/node/index.js"
+    },
+    "./node/types": {
+      "types": "./lib/node/types/index.d.ts",
+      "import": "./lib/node/types/index.js",
+      "require": "./lib/node/types/index.js"
     }
   },
   "homepage": "https://github.com/streamich/memfs",
@@ -135,7 +155,8 @@
     "@jsonjoy.com/json-pack": "^1.2.0",
     "@jsonjoy.com/util": "^1.6.0",
     "tree-dump": "^1.0.1",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "web-streams-polyfill": "^4.1.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
