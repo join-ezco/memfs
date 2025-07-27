@@ -1,16 +1,29 @@
 import { promisify } from './util';
+import { EventEmitter } from 'events';
 import type * as opts from './types/options';
 import type { IFileHandle, IReadStream, IWriteStream, IStats, TData, TDataOut, TMode, TTime } from './types/misc';
 import type { FsCallbackApi } from './types';
 
-export class FileHandle implements IFileHandle {
+export class FileHandle extends EventEmitter implements IFileHandle {
   private fs: FsCallbackApi;
+  private refs: number = 1;
+  private closePromise: Promise<void> | null = null;
+  private closeResolve?: () => void;
+  private closeReject?: (error: Error) => void;
+  private position: number = 0;
 
   fd: number;
 
   constructor(fs: FsCallbackApi, fd: number) {
+    super();
     this.fs = fs;
     this.fd = fd;
+  }
+
+  getAsyncId(): number {
+    // Return a unique async ID for this file handle
+    // In a real implementation, this would be provided by the underlying system
+    return this.fd;
   }
 
   appendFile(data: TData, options?: opts.IAppendFileOptions | string): Promise<void> {
@@ -26,7 +39,37 @@ export class FileHandle implements IFileHandle {
   }
 
   close(): Promise<void> {
-    return promisify(this.fs, 'close')(this.fd);
+    if (this.fd === -1) {
+      return Promise.resolve();
+    }
+
+    if (this.closePromise) {
+      return this.closePromise;
+    }
+
+    this.refs--;
+    if (this.refs === 0) {
+      const currentFd = this.fd;
+      this.fd = -1;
+      this.closePromise = promisify(
+        this.fs,
+        'close',
+      )(currentFd).finally(() => {
+        this.closePromise = null;
+      });
+    } else {
+      this.closePromise = new Promise<void>((resolve, reject) => {
+        this.closeResolve = resolve;
+        this.closeReject = reject;
+      }).finally(() => {
+        this.closePromise = null;
+        this.closeReject = undefined;
+        this.closeResolve = undefined;
+      });
+    }
+
+    this.emit('close');
+    return this.closePromise;
   }
 
   datasync(): Promise<void> {
@@ -41,18 +84,93 @@ export class FileHandle implements IFileHandle {
     return this.fs.createWriteStream('', { ...options, fd: this });
   }
 
-  readableWebStream(options?: opts.IReadableWebStreamOptions): ReadableStream {
+  readableWebStream(options: opts.IReadableWebStreamOptions = {}): ReadableStream {
+    const { type = 'bytes' } = options;
+    let position = 0;
+    let locked = false;
+
+    if (this.fd === -1) {
+      throw new Error('The FileHandle is closed');
+    }
+
+    if (this.closePromise) {
+      throw new Error('The FileHandle is closing');
+    }
+
+    if (locked) {
+      throw new Error('The FileHandle is locked');
+    }
+
+    locked = true;
+    this.ref();
+
     return new ReadableStream({
+      type: 'bytes',
+      autoAllocateChunkSize: 16384,
+
       pull: async controller => {
-        const data = await this.readFile();
-        controller.enqueue(data);
-        controller.close();
+        try {
+          const view = controller.byobRequest?.view;
+          if (!view) {
+            // Fallback for when BYOB is not available
+            const buffer = new Uint8Array(16384);
+            const result = await this.read(buffer, 0, buffer.length, position);
+
+            if (result.bytesRead === 0) {
+              controller.close();
+              this.unref();
+              return;
+            }
+
+            position += result.bytesRead;
+            controller.enqueue(buffer.slice(0, result.bytesRead));
+            return;
+          }
+
+          const result = await this.read(view as Uint8Array, view.byteOffset, view.byteLength, position);
+
+          if (result.bytesRead === 0) {
+            controller.close();
+            this.unref();
+            return;
+          }
+
+          position += result.bytesRead;
+          controller.byobRequest.respond(result.bytesRead);
+        } catch (error) {
+          controller.error(error);
+          this.unref();
+        }
+      },
+
+      cancel: async () => {
+        this.unref();
       },
     });
   }
 
-  read(buffer: Buffer | Uint8Array, offset: number, length: number, position: number): Promise<TFileHandleReadResult> {
-    return promisify(this.fs, 'read', bytesRead => ({ bytesRead, buffer }))(this.fd, buffer, offset, length, position);
+  async read(
+    buffer: Buffer | Uint8Array,
+    offset: number,
+    length: number,
+    position?: number | null,
+  ): Promise<TFileHandleReadResult> {
+    const readPosition = position !== null && position !== undefined ? position : this.position;
+
+    const result = await promisify(this.fs, 'read', bytesRead => ({ bytesRead, buffer }))(
+      this.fd,
+      buffer,
+      offset,
+      length,
+      readPosition,
+    );
+
+    // Update internal position only if position was null/undefined
+    if (position === null || position === undefined) {
+      this.position += result.bytesRead;
+    }
+
+    return result;
   }
 
   readv(buffers: ArrayBufferView[], position?: number | null | undefined): Promise<TFileHandleReadvResult> {
@@ -79,19 +197,28 @@ export class FileHandle implements IFileHandle {
     return promisify(this.fs, 'futimes')(this.fd, atime, mtime);
   }
 
-  write(
+  async write(
     buffer: Buffer | Uint8Array,
     offset?: number,
     length?: number,
-    position?: number,
+    position?: number | null,
   ): Promise<TFileHandleWriteResult> {
-    return promisify(this.fs, 'write', bytesWritten => ({ bytesWritten, buffer }))(
+    const writePosition = position !== null && position !== undefined ? position : this.position;
+
+    const result = await promisify(this.fs, 'write', bytesWritten => ({ bytesWritten, buffer }))(
       this.fd,
       buffer,
       offset,
       length,
-      position,
+      writePosition,
     );
+
+    // Update internal position only if position was null/undefined
+    if (position === null || position === undefined) {
+      this.position += result.bytesWritten;
+    }
+
+    return result;
   }
 
   writev(buffers: ArrayBufferView[], position?: number | null | undefined): Promise<TFileHandleWritevResult> {
@@ -100,6 +227,25 @@ export class FileHandle implements IFileHandle {
 
   writeFile(data: TData, options?: opts.IWriteFileOptions): Promise<void> {
     return promisify(this.fs, 'writeFile')(this.fd, data, options);
+  }
+
+  // Implement Symbol.asyncDispose if available (ES2023+)
+  async [(Symbol as any).asyncDispose](): Promise<void> {
+    await this.close();
+  }
+
+  private ref(): void {
+    this.refs++;
+  }
+
+  private unref(): void {
+    this.refs--;
+    if (this.refs === 0) {
+      this.fd = -1;
+      if (this.closeResolve) {
+        promisify(this.fs, 'close')(this.fd).then(this.closeResolve, this.closeReject);
+      }
+    }
   }
 }
 

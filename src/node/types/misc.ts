@@ -135,8 +135,9 @@ declare global {
   export interface ReadableStream {}
 }
 
-export interface IFileHandle {
+export interface IFileHandle extends EventEmitter {
   fd: number;
+  getAsyncId(): number;
   appendFile(data: TData, options?: IAppendFileOptions | string): Promise<void>;
   chmod(mode: TMode): Promise<void>;
   chown(uid: number, gid: number): Promise<void>;
@@ -145,7 +146,12 @@ export interface IFileHandle {
   createWriteStream(options: IFileHandleWriteStreamOptions): IWriteStream;
   datasync(): Promise<void>;
   readableWebStream(options?: IReadableWebStreamOptions): ReadableStream;
-  read(buffer: Buffer | Uint8Array, offset: number, length: number, position: number): Promise<TFileHandleReadResult>;
+  read(
+    buffer: Buffer | Uint8Array,
+    offset: number,
+    length: number,
+    position?: number | null,
+  ): Promise<TFileHandleReadResult>;
   readv(buffers: ArrayBufferView[], position?: number | null): Promise<TFileHandleReadvResult>;
   readFile(options?: IReadFileOptions | string): Promise<TDataOut>;
   stat(options?: IStatOptions): Promise<IStats>;
@@ -155,7 +161,7 @@ export interface IFileHandle {
     buffer: Buffer | ArrayBufferView | DataView,
     offset?: number,
     length?: number,
-    position?: number,
+    position?: number | null,
   ): Promise<TFileHandleWriteResult>;
   writev(buffers: ArrayBufferView[], position?: number | null): Promise<TFileHandleWritevResult>;
   writeFile(data: TData, options?: IWriteFileOptions): Promise<void>;

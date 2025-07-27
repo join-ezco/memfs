@@ -1,3 +1,70 @@
+# [4.23.0](https://github.com/streamich/memfs/compare/v4.22.1...v4.23.0) (2025-07-27)
+
+
+### Features
+
+* add `promises.watch` ([45a6171](https://github.com/streamich/memfs/commit/45a61716ab7e306f4f364ad6f07a7840f510a20e))
+
+## [4.22.1](https://github.com/streamich/memfs/compare/v4.22.0...v4.22.1) (2025-07-27)
+
+
+### Bug Fixes
+
+* `fs.createReadStream` throwing `ERR_OUT_OF_RANGE` with start parameter ([5e5e5ca](https://github.com/streamich/memfs/commit/5e5e5ca4726f615d2fa7a5dd9ae27341c6a38682))
+
+# [4.22.0](https://github.com/streamich/memfs/compare/v4.21.0...v4.22.0) (2025-07-27)
+
+
+### Features
+
+* add `realpath.native` and its sync variant ([89d7e54](https://github.com/streamich/memfs/commit/89d7e54164a0515f82cebf098295d8b58f010cab))
+
+# [4.21.0](https://github.com/streamich/memfs/compare/v4.20.1...v4.21.0) (2025-07-27)
+
+
+### Features
+
+* improve `Dir` class, align better with Node.js ([cdc257a](https://github.com/streamich/memfs/commit/cdc257a800abe30512eab8a4ef763f6df8de8d09))
+
+## [4.20.1](https://github.com/streamich/memfs/compare/v4.20.0...v4.20.1) (2025-07-27)
+
+
+### Bug Fixes
+
+* track internal position in FileHandle ([7406f1b](https://github.com/streamich/memfs/commit/7406f1b29ab7d0dbd45f27428258de40c7809e99))
+
+# [4.20.0](https://github.com/streamich/memfs/compare/v4.19.0...v4.20.0) (2025-07-25)
+
+
+### Features
+
+* improve `FileHandle` implementation ([4b39403](https://github.com/streamich/memfs/commit/4b39403783e012805f9956dd467a1b707db353b4))
+
+# [4.19.0](https://github.com/streamich/memfs/compare/v4.18.0...v4.19.0) (2025-07-25)
+
+
+### Bug Fixes
+
+* improve cross-platform path validation in cp operations to prevent Windows infinite recursion ([77535d0](https://github.com/streamich/memfs/commit/77535d01fd1026efe6f1f08a84cde22a03e885db))
+* prevent infinite recursion in Windows path resolution for cp operations ([0f26418](https://github.com/streamich/memfs/commit/0f264184d62dd5aebf2fae47c4044ab888506059))
+
+
+### Features
+
+* implement cp, cpSync, and promises.cp APIs ([389f1f5](https://github.com/streamich/memfs/commit/389f1f574352602a7aabb86f1d0ca9423e9f1df8))
+
+
+### Performance Improvements
+
+* ⚡️ do not create a temporary function ([c8dbc24](https://github.com/streamich/memfs/commit/c8dbc24696e71735328f92cfbd9178e85b1d6852))
+
+# [4.18.0](https://github.com/streamich/memfs/compare/v4.17.2...v4.18.0) (2025-07-25)
+
+
+### Features
+
+* add missing opendir methods ([7412d71](https://github.com/streamich/memfs/commit/7412d71755e7bf6e9831f0e25fead5cef90f87fa))
+
 ## [4.17.2](https://github.com/streamich/memfs/compare/v4.17.1...v4.17.2) (2025-05-15)
 
 
