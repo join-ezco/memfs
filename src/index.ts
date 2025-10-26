@@ -1,3 +1,9 @@
+import * as p from 'process';
+
+// Only assign to window.process if it doesn't already exist and we're in a browser environment
+if (typeof window !== 'undefined' && !window.process) {
+  window.process = p;
+}
 import Stats from './Stats';
 import Dirent from './Dirent';
 import {

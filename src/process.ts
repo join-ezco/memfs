@@ -1,49 +1,38 @@
-// Here we mock the global `process` variable in case we are not in Node's environment.
+import * as process from 'process';
 
 export interface IProcess {
   getuid?(): number;
-
   getgid?(): number;
-
   cwd(): string;
-
   platform: string;
   emitWarning: (message: string, type: string) => void;
   env: {};
 }
 
-/**
- * Looks to return a `process` object, if one is available.
- *
- * The global `process` is returned if defined;
- * otherwise `require('process')` is attempted.
- *
- * If that fails, `undefined` is returned.
- *
- * @return {IProcess | undefined}
- */
-const maybeReturnProcess = (): IProcess | undefined => {
-  if (typeof process !== 'undefined') {
-    return process;
-  }
-
-  try {
-    return require('process');
-  } catch {
-    return undefined;
-  }
-};
 
 export function createProcess(): IProcess {
-  const p: IProcess = maybeReturnProcess() || ({} as IProcess);
-
-  if (!p.cwd) p.cwd = () => '/';
-  if (!p.emitWarning)
-    p.emitWarning = (message, type) => {
+  // 1. Define an object with all the default fallbacks.
+  const defaults = {
+    cwd: () => '/',
+    emitWarning: (message: string, type: string) => {
       // tslint:disable-next-line:no-console
       console.warn(`${type}${type ? ': ' : ''}${message}`);
-    };
-  if (!p.env) p.env = {};
+    },
+    env: {},
+    // You can add other defaults from your interface here if needed.
+    getuid: () => 0,
+    getgid: () => 0,
+    platform: 'browser',
+  };
+
+  // 2. Create a new object. Spread the defaults first, then the actual
+  //    `process` object. This ensures that any existing properties on
+  //    `process` will override the defaults.
+  const p: IProcess = {
+    ...defaults,
+    ...process,
+  };
+
   return p;
 }
 

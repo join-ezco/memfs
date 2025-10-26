@@ -1,4 +1,4 @@
-import * as pathModule from 'path';
+import * as pathModule from 'path-browserify';
 import { Node, Link, File } from './node';
 import Stats from './Stats';
 import Dirent from './Dirent';
@@ -11,7 +11,7 @@ import { constants } from './constants';
 import { EventEmitter } from 'events';
 import { TEncodingExtended, TDataOut, strToEncoding, ENCODING_UTF8 } from './encoding';
 import { FileHandle } from './node/FileHandle';
-import * as util from 'util';
+import { inherits } from './internal/util';
 import * as misc from './node/types/misc';
 import * as opts from './node/types/options';
 import { FsCallbackApi, WritevCallback } from './node/types/FsCallbackApi';
@@ -2502,7 +2502,7 @@ function allocNewPool(poolSize) {
   pool.used = 0;
 }
 
-util.inherits(FsReadStream, Readable);
+inherits(FsReadStream, Readable);
 export { FsReadStream as ReadStream };
 function FsReadStream(vol, path, options) {
   if (!(this instanceof FsReadStream)) return new (FsReadStream as any)(vol, path, options);
@@ -2674,7 +2674,7 @@ export interface IWriteStream extends Writable {
   close();
 }
 
-util.inherits(FsWriteStream, Writable);
+inherits(FsWriteStream, Writable);
 export { FsWriteStream as WriteStream };
 function FsWriteStream(vol, path, options) {
   if (!(this instanceof FsWriteStream)) return new (FsWriteStream as any)(vol, path, options);

@@ -4,8 +4,7 @@
 // value statically and permanently identifies the error. While the error
 // message may change, the code should not.
 
-import assert from 'assert';
-import util from 'util';
+import { assert, strictEqual, inspect, format } from './util';
 
 const kCode = typeof Symbol === 'undefined' ? '_kCode' : (Symbol as any)('code');
 const messages = {}; // new Map();
@@ -39,8 +38,8 @@ class AssertionError extends g.Error {
       super(options.message);
     } else {
       super(
-        `${util.inspect(options.actual).slice(0, 128)} ` +
-        `${options.operator} ${util.inspect(options.expected).slice(0, 128)}`,
+        `${inspect(options.actual).slice(0, 128)} ` +
+        `${options.operator} ${inspect(options.expected).slice(0, 128)}`,
       );
     }
 
@@ -55,7 +54,7 @@ class AssertionError extends g.Error {
 }
 
 function message(key, args) {
-  assert.strictEqual(typeof key, 'string');
+  strictEqual(typeof key, 'string');
   // const msg = messages.get(key);
   const msg = messages[key];
   assert(msg, `An invalid error message key was used: ${key}.`);
@@ -63,7 +62,7 @@ function message(key, args) {
   if (typeof msg === 'function') {
     fmt = msg;
   } else {
-    fmt = util.format;
+    fmt = format;
     if (args === undefined || args.length === 0) return msg;
     args.unshift(msg);
   }
@@ -115,7 +114,7 @@ E('ERR_HTTP_TRAILER_INVALID', 'Trailers are invalid with this transfer encoding'
 E('ERR_INDEX_OUT_OF_RANGE', 'Index out of range');
 E('ERR_INVALID_ARG_TYPE', invalidArgType);
 E('ERR_INVALID_ARRAY_LENGTH', (name, len, actual) => {
-  assert.strictEqual(typeof actual, 'number');
+  strictEqual(typeof actual, 'number');
   return `The array "${name}" (length ${actual}) must be of length ${len}.`;
 });
 E('ERR_INVALID_BUFFER_SIZE', 'Buffer size must be a multiple of %s');

@@ -33,8 +33,10 @@ onlyOnNode20('CrudCas on FsaCrud', () => {
       (h1: Hash, h2: Hash) => h1.digest === h2.digest,
     );
     const blob = Buffer.from('hello world');
+    // @ts-expect-error
     const id = await cas.put(blob);
     expect(id).toBeInstanceOf(Hash);
+    // @ts-expect-error
     const id2 = await hash(blob);
     expect(id.digest).toEqual(id2.digest);
     const blob2 = await cas.get(id);
@@ -59,8 +61,10 @@ onlyOnNode20('CrudCas on FsaCrud', () => {
       (h1: string, h2: string) => h1 === h2,
     );
     const blob = Buffer.from('hello world');
+    // @ts-expect-error
     const id = await cas.put(blob);
     expect(typeof id).toBe('string');
+    // @ts-expect-error
     const id2 = await hash(blob);
     expect(id).toBe(id2);
     const blob2 = await cas.get(id);

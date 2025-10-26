@@ -163,10 +163,11 @@ export class Node extends EventEmitter {
 
     if (pos + len > this.buf.length) {
       const newBuf = bufferAllocUnsafe(pos + len);
+      // @ts-expect-error
       this.buf.copy(newBuf, 0, 0, this.buf.length);
       this.buf = newBuf;
     }
-
+    // @ts-expect-error
     buf.copy(this.buf, pos, off, off + len);
 
     this.touch();
@@ -192,6 +193,7 @@ export class Node extends EventEmitter {
       actualLen = this.buf.length - pos;
     }
     const buf2 = buf instanceof Buffer ? buf : Buffer.from(buf.buffer);
+    // @ts-expect-error
     this.buf.copy(buf2, off, pos, pos + actualLen);
     return actualLen;
   }
@@ -204,6 +206,7 @@ export class Node extends EventEmitter {
         this.buf = this.buf.slice(0, len);
       } else {
         const buf = bufferAllocUnsafe(len);
+        // @ts-expect-error
         this.buf.copy(buf);
         buf.fill(0, this.buf.length);
         this.buf = buf;

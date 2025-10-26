@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "esnext",
     "lib": [
       "ES2020",
@@ -16,7 +17,30 @@
     "skipLibCheck": true,
     "noEmitHelpers": true,
     "importHelpers": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "process": [
+        "./node_modules/process/browser.js"
+      ],
+      "events": [
+        "./node_modules/events/events.js"
+      ],
+      "stream": [
+        "./node_modules/stream-browserify/index.js"
+      ],
+      "buffer": [
+        "./node_modules/buffer/index.js"
+      ],
+      "assert": [
+        "./node_modules/assert/build/assert.js"
+      ],
+      "path": [
+        "./node_modules/path-browserify/index.js"
+      ],
+      "util": [
+        "./node_modules/util/util.js"
+      ]
+    }
   },
   "include": [
     "src"

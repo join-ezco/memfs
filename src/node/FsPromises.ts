@@ -226,6 +226,8 @@ export class FsPromises implements FsPromisesApi {
       );
     };
   }
+
+  // @ts-expect-error
   public readonly writeFile = (
     id: misc.TFileHandle,
     data: misc.TPromisesData,
@@ -237,6 +239,7 @@ export class FsPromises implements FsPromisesApi {
     );
   };
 
+  // @ts-expect-error
   public readonly watch = (
     filename: misc.PathLike,
     options?: opts.IWatchOptions | string,
